@@ -508,43 +508,116 @@
   border-radius: 16px;
   background: #12231ca8;
 }
-.mechanism-flow {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.mechanism-diagram {
+  position: relative;
+  aspect-ratio: 520 / 320;
+  width: 100%;
   margin-block: 28px;
 }
-.flow-node {
+.mechanism-diagram-lines {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  padding: 20px;
+  height: 100%;
+}
+.mechanism-branch {
+  fill: none;
+  stroke: #78e4c359;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 4 8;
+  animation: mechanism-flow 3s linear infinite;
+}
+@keyframes mechanism-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+.mechanism-token {
+  position: absolute;
+  left: 12.3%;
+  top: 50%;
+  width: 56px;
+  height: 56px;
+  transform: translate(-50%, -50%);
+}
+.mechanism-token-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid #78e4c3;
+  box-shadow:
+    0 0 24px #56ddb44d,
+    inset 0 0 12px #56ddb42e;
+}
+.mechanism-token-core {
+  position: absolute;
+  inset: 20%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    #bff3e1,
+    #56ddb4 55%,
+    #1f4a3c 100%
+  );
+  box-shadow: 0 0 18px #56ddb499;
+  animation: mechanism-pulse 3s ease-in-out infinite;
+}
+@keyframes mechanism-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.9;
+  }
+}
+.mechanism-pill {
+  position: absolute;
+  left: 35.4%;
+  padding: 10px 18px;
   border: 1px solid #ffffff1c;
-  border-radius: 10px;
+  border-radius: 999px;
   background: #111d17;
-  text-align: center;
 }
-.flow-node strong {
-  display: block;
-  font-size: 19px;
+.mechanism-pill strong {
+  font-size: 15px;
   font-weight: 500;
+  color: #eef5f0;
 }
-.flow-node span {
-  display: block;
-  margin-top: 6px;
+.mechanism-pill-accent {
+  border-color: #78e4c354;
+  background: #56ddb40e;
+}
+.mechanism-pill-a {
+  top: 18.75%;
+  transform: translateY(-50%);
+}
+.mechanism-pill-b {
+  top: 50%;
+  transform: translateY(-50%);
+}
+.mechanism-pill-c {
+  top: 81.25%;
+  transform: translateY(-50%);
+}
+.mechanism-note {
+  position: absolute;
+  left: 35.4%;
+  margin: 0;
   color: #98b0a1;
   font-size: 13px;
 }
-.flow-arrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 54px;
-  gap: 14px;
-  font-size: 12px;
-  color: #83b39a;
+.mechanism-note-a {
+  top: calc(18.75% + 28px);
 }
-.flow-node-accent {
-  border-color: #78e4c354;
-  background: #56ddb40e;
+.mechanism-note-b {
+  top: calc(50% + 28px);
+}
+.mechanism-note-c {
+  top: calc(81.25% + 28px);
 }
 .mechanism-figure figcaption {
   color: #aabbb0;
@@ -979,6 +1052,20 @@
   }
   .mechanism-figure {
     padding: 24px;
+  }
+  .mechanism-token {
+    width: 40px;
+    height: 40px;
+  }
+  .mechanism-pill {
+    padding: 8px 12px;
+  }
+  .mechanism-pill strong {
+    font-size: 13px;
+  }
+  .mechanism-note {
+    font-size: 11px;
+    max-width: 58%;
   }
   .asset-list {
     gap: 0;

@@ -20,27 +20,46 @@ export default function Card({ id }: { id: number }) {
       <figure className="mechanism-figure" aria-labelledby="mechanism-caption">
         <p className="eyebrow">The self-repaying loan</p>
         <div
-          className="mechanism-flow"
-          aria-label="Eligible collateral generates yield. That yield is applied to the outstanding debt."
+          className="mechanism-diagram"
+          aria-label="Your collateral generates yield. That yield is applied to the outstanding debt, leaving a smaller balance to repay."
         >
-          <div className="flow-node">
+          <svg
+            className="mechanism-diagram-lines"
+            viewBox="0 0 520 320"
+            aria-hidden="true"
+          >
+            <path
+              className="mechanism-branch"
+              d="M108,160 C150,160 150,60 184,60"
+            />
+            <path className="mechanism-branch" d="M108,160 L184,160" />
+            <path
+              className="mechanism-branch"
+              d="M108,160 C150,160 150,260 184,260"
+            />
+          </svg>
+          <div className="mechanism-token" aria-hidden="true">
+            <span className="mechanism-token-ring" />
+            <span className="mechanism-token-core" />
+          </div>
+          <div className="mechanism-pill mechanism-pill-a">
             <strong>Your collateral</strong>
-            <span>Eligible yield-bearing assets</span>
           </div>
-          <div className="flow-arrow" aria-hidden="true">
-            <span>↓</span> Generates yield
-          </div>
-          <div className="flow-node flow-node-accent">
+          <p className="mechanism-note mechanism-note-a">
+            Eligible yield-bearing assets
+          </p>
+          <div className="mechanism-pill mechanism-pill-b mechanism-pill-accent">
             <strong>Yield goes to your loan</strong>
-            <span>Applied automatically to the debt</span>
           </div>
-          <div className="flow-arrow" aria-hidden="true">
-            <span>↓</span> Offsets borrowing costs
-          </div>
-          <div className="flow-node">
+          <p className="mechanism-note mechanism-note-b">
+            Applied automatically to the debt
+          </p>
+          <div className="mechanism-pill mechanism-pill-c">
             <strong>A smaller balance to repay</strong>
-            <span>When yield exceeds borrowing interest</span>
           </div>
+          <p className="mechanism-note mechanism-note-c">
+            When yield exceeds borrowing interest
+          </p>
         </div>
         <figcaption id="mechanism-caption">
           Planned mechanism. Yield and borrowing rates vary; you still owe any

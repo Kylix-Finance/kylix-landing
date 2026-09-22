@@ -37,7 +37,7 @@ export default function ClosingArt(): ReactElement | null {
           <Scene
             scrollYProgress={scrollYProgress}
             height="100%"
-            frustumSize={11}
+            frustumSize={7}
           />
           <motion.div
             className="closing-art-logo"

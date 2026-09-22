@@ -116,6 +116,15 @@
   background:
     radial-gradient(ellipse at 85% 8%, #16453666, transparent 48%), #080e0d;
 }
+.atmosphere-pointer-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle 380px at var(--pointer-x, 50%) var(--pointer-y, 50%),
+    #56ddb41f,
+    transparent 70%
+  );
+}
 .atmosphere-grain {
   position: absolute;
   inset: 0;
@@ -404,17 +413,17 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: min(70%, 480px);
+  width: min(85%, 720px);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: radial-gradient(circle, #56ddb414, transparent 70%);
+  background: radial-gradient(circle, #56ddb41f, transparent 70%);
   z-index: -1;
 }
 .closing-art-canvas {
   position: relative;
   width: 100%;
-  height: min(64vh, 520px);
+  height: min(92vh, 820px);
 }
 .closing-art-logo {
   position: absolute;
@@ -920,10 +929,10 @@
 @keyframes emblem-float {
   0%,
   100% {
-    transform: translateY(0) rotate(-8deg);
+    transform: translateY(0) rotate(-16deg);
   }
   50% {
-    transform: translateY(-10px) rotate(0);
+    transform: translateY(-14px) rotate(14deg);
   }
 }
 @media (min-width: 1600px) {

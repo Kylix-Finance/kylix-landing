@@ -116,15 +116,6 @@
   background:
     radial-gradient(ellipse at 85% 8%, #16453666, transparent 48%), #080e0d;
 }
-.atmosphere-pointer-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle 380px at var(--pointer-x, 50%) var(--pointer-y, 50%),
-    #56ddb41f,
-    transparent 70%
-  );
-}
 .atmosphere-grain {
   position: absolute;
   inset: 0;
@@ -402,6 +393,7 @@
   position: sticky;
   top: 0;
   height: 100dvh;
+  padding-top: 96px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -423,13 +415,13 @@
 .closing-art-canvas {
   position: relative;
   width: 100%;
-  height: min(92vh, 820px);
+  height: min(88vh, 820px);
 }
 .closing-art-logo {
   position: absolute;
-  top: 33%;
+  top: 15%;
   left: 50%;
-  width: min(18%, 92px);
+  width: min(14%, 92px);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   filter: drop-shadow(0 0 16px #56ddb499);

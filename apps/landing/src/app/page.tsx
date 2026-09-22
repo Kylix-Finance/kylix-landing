@@ -22,6 +22,7 @@ export default function Page() {
   return (
     <>
       <Hero />
+      <ClosingArt />
       <FeaturedPartners />
       <SmartLending />
       <HowItWorks />
@@ -29,7 +30,6 @@ export default function Page() {
       <SupportedAssetsAndAPY />
       <SecurityAndAudits />
       <WaitingList />
-      <ClosingArt />
     </>
   );
 }

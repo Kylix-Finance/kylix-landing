@@ -1,9 +1,7 @@
 "use client";
-
-import { ChangeEvent, FormEvent, ReactElement, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { createContact } from "~/api/contact";
 import Button from "~/components/Button";
-import Section from "~/components/Section";
 import { waitingListSectionId } from "~/data/ids";
 import { isEmailAddress } from "~/utils";
 
@@ -12,133 +10,125 @@ function messageFor(code: string): string {
     case "invalid_email":
       return "Enter a valid email address.";
     case "already_registered":
-      return "That email is already on the list.";
+      return "That email is already on the list. You are all set.";
     case "rate_limited":
       return "Too many attempts. Wait a minute and try again.";
     case "unavailable":
-      return "The list is closed right now.";
+      return "Sign-up is temporarily unavailable. Please try again later.";
     default:
-      return "We couldn't add you. Try again in a minute.";
+      return "We couldn't add you. Please try again in a minute.";
   }
 }
-
-export default function WaitingList(): ReactElement {
+export default function WaitingList() {
   const [email, setEmail] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const emailRef = useRef<HTMLInputElement>(null);
 
-  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>): void => {
+  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
     setError("");
+    setIsSuccess(false);
   };
-
-  const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (isPending) return;
-
     const nextEmail = email.trim();
     if (!isEmailAddress(nextEmail)) {
       setError(messageFor("invalid_email"));
       setIsSuccess(false);
+      emailRef.current?.focus();
       return;
     }
-
     setIsPending(true);
     setError("");
     setIsSuccess(false);
-
     try {
       await createContact(nextEmail);
       setIsSuccess(true);
       setEmail("");
     } catch (err) {
-      const code = err instanceof Error ? err.message : "failed";
-      setError(messageFor(code));
-      setIsSuccess(false);
+      setError(messageFor(err instanceof Error ? err.message : "failed"));
     } finally {
       setIsPending(false);
     }
   };
-
-  const noteId = "list-note";
-  const errorId = "list-error";
-
   return (
-    <div className="flex w-full justify-center lg:max-w-[1900px]">
-      <Section
-        heading={{
-          left: "Join",
-          right: "the list",
-        }}
-        contentClassName="gap-8 rounded-2xl border border-primary-900 py-9 backdrop-blur-md md:py-12 lg:py-16"
-        className="mb-44"
-        description="One email. We write when a testnet or mainnet date exists."
-        id={waitingListSectionId}
-      >
+    <section
+      id={waitingListSectionId}
+      className="site-container waitlist-section"
+      aria-labelledby="waitlist-heading"
+    >
+      <div className="waitlist-panel">
+        <div>
+          <p className="eyebrow">
+            <span className="status-dot" /> Stay in the loop
+          </p>
+          <h2 id="waitlist-heading">
+            Be there for
+            <br />
+            <span className="text-primary-400">what comes next.</span>
+          </h2>
+          <p className="section-description">
+            Get testnet and mainnet announcements, plus occasional notes from
+            the team.
+          </p>
+        </div>
         <form
-          className="flex w-full max-w-xl flex-col"
+          className="waitlist-form"
           onSubmit={onSubmit}
           noValidate
+          aria-busy={isPending}
         >
-          <div className="flex h-full items-center justify-center gap-2.5">
-            <div className="relative h-full w-full rounded-lg">
-              <label htmlFor="list-email" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="list-email"
-                name="email"
-                type="email"
-                inputMode="email"
-                autoComplete="email"
-                autoCapitalize="none"
-                autoCorrect="off"
-                spellCheck={false}
-                required
-                value={email}
-                disabled={isPending}
-                onChange={onChangeHandler}
-                placeholder="Email address"
-                aria-invalid={Boolean(error)}
-                aria-describedby={error ? `${noteId} ${errorId}` : noteId}
-                className="relative h-full w-full rounded-md border border-secondary-400 bg-transparent px-4 py-2 text-secondary-100 outline-hidden placeholder:text-secondary-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 disabled:opacity-60"
-              />
-            </div>
-            <Button
-              color="secondary"
-              type="submit"
+          <label htmlFor="list-email">Your email address</label>
+          <div className="waitlist-fields">
+            <input
+              ref={emailRef}
+              id="list-email"
+              name="email"
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
+              required
+              maxLength={254}
+              value={email}
               disabled={isPending}
-              aria-busy={isPending}
-            >
-              {isPending ? "Joining" : "Join"}
+              onChange={onChangeHandler}
+              placeholder="you@example.com"
+              aria-invalid={error === messageFor("invalid_email")}
+              aria-describedby={error ? "list-note list-error" : "list-note"}
+            />
+            <Button type="submit" disabled={isPending}>
+              {isPending ? "Joining…" : "Notify me"}
+              <span aria-hidden="true">↗</span>
             </Button>
           </div>
           {error && (
-            <p id={errorId} role="alert" className="mt-3 text-sm text-red-400">
+            <p
+              id="list-error"
+              role="alert"
+              className="waitlist-feedback text-red-300"
+            >
               {error}
             </p>
           )}
-          {isSuccess && (
-            <p role="status" className="mt-3 text-sm text-primary-300">
-              You are on the list. We will write when there is a date.
-            </p>
-          )}
-          <p
-            id={noteId}
-            className="mt-6 text-center text-xs font-normal leading-5 tracking-wide text-secondary-200"
-          >
-            We use this address for launch notes. Read the{" "}
-            <a
-              href="/privacy"
-              className="text-secondary-100 underline decoration-primary-500/50 underline-offset-4 hover:text-white"
-            >
-              privacy note
-            </a>
-            .
+          <div role="status" aria-live="polite">
+            {isSuccess && (
+              <p className="waitlist-feedback text-primary-300">
+                You are on the list. We will email you when there is news.
+              </p>
+            )}
+          </div>
+          <p id="list-note" className="waitlist-note">
+            No wallet needed. Read our <a href="/privacy">privacy note</a> for
+            how we use your address and how to leave the list.
           </p>
         </form>
-      </Section>
-    </div>
+      </div>
+    </section>
   );
 }

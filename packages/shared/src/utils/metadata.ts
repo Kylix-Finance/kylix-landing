@@ -9,7 +9,7 @@ const PLACEHOLDER_HOSTS = new Set([
   "www.google.come",
 ]);
 
-export function resolveMetadataBase(): URL {
+function resolveMetadataBase(): URL {
   const raw = process.env.NEXT_PUBLIC_FRONTEND_URL;
   if (raw) {
     try {
@@ -25,9 +25,6 @@ export function resolveMetadataBase(): URL {
 const baseMetadata = (siteName = "Kylix"): Metadata => {
   return {
     metadataBase: resolveMetadataBase(),
-    alternates: {
-      canonical: "./",
-    },
     openGraph: {
       url: "./",
       siteName,

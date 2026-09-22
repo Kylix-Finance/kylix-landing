@@ -1,20 +1,16 @@
 import { useEffect } from "react";
-
-type UseLockBodyScroll = {
-  isLocked: boolean;
-};
-
-export const useLockBodyScroll = ({ isLocked }: UseLockBodyScroll) => {
+export const useLockBodyScroll = ({ isLocked }: { isLocked: boolean }) => {
   useEffect(() => {
     if (!isLocked) return;
+    const { overflow, paddingRight } = document.body.style;
     const scrollbarWidth =
       window.innerWidth - document.documentElement.clientWidth;
-    document.body.style.marginRight = scrollbarWidth + "px";
+    if (scrollbarWidth > 0)
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
     document.body.style.overflow = "hidden";
-
     return () => {
-      document.body.style.marginRight = "0px";
-      document.body.style.overflow = "visible";
+      document.body.style.paddingRight = paddingRight;
+      document.body.style.overflow = overflow;
     };
   }, [isLocked]);
 };

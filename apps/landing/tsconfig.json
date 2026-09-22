@@ -15,5 +15,11 @@
     "../../theme.d.ts",
     "../../global.d.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "src/app/_parts/Hero/components/Scene.tsx",
+    "src/app/_parts/Hero/components/Camera.tsx",
+    "src/app/_parts/Hero/components/Jar.tsx",
+    "src/app/_parts/Hero/components/Hero3D.tsx"
+  ]
 }

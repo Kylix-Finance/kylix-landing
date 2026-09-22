@@ -10,30 +10,25 @@ const withMDXWrapper = withMDX({
 module.exports = withMDXWrapper({
   productionBrowserSourceMaps: false,
   images: {
-    formats: ["image/avif", "image/webp"],
     remotePatterns: [],
   },
-  turbopack: {
-    rules: {
-      "*.svg": {
-        loaders: ["@svgr/webpack"],
-        as: "*.js",
+  experimental: {
+    turbo: {
+      rules: {
+        "*.svg": {
+          loaders: ["@svgr/webpack"],
+          as: "*.js",
+        },
       },
     },
   },
   pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
   transpilePackages: [],
   webpack(config) {
-    config.module.rules.push(
-      {
-        test: /\.svg$/i,
-        use: ["@svgr/webpack"],
-      },
-      {
-        test: /\/index.ts$/,
-        sideEffects: false,
-      }
-    );
+    config.module.rules.push({
+      test: /\.svg$/i,
+      use: ["@svgr/webpack"],
+    });
     return config;
   },
 });

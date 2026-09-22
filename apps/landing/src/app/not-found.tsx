@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 
 export default function NotFound(): ReactElement {
   return (
-    <div className="flex min-h-[70dvh] w-full flex-col items-center justify-center gap-6 px-6 text-center">
-      <h1 className="text-balance font-heading text-4xl text-white sm:text-5xl">
+    <div className="flex min-h-[80dvh] w-full flex-col items-center justify-center gap-6 px-6 pb-16 pt-36 text-center">
+      <h1 className="text-balance text-4xl font-medium tracking-tight text-white sm:text-5xl">
         This page is not here
       </h1>
       <p className="max-w-md text-pretty text-secondary-100">

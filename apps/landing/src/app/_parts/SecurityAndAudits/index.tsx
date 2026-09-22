@@ -1,21 +1,25 @@
 import Section from "~/components/Section";
 import { securityAndAuditsData } from "~/data";
 import Card from "./components/Card";
-
-const SecurityAndAudits = () => {
+export default function SecurityAndAudits() {
   return (
     <Section
       heading={securityAndAuditsData.heading}
+      eyebrow="05 / The road to launch"
       description={securityAndAuditsData.description}
       id={securityAndAuditsData.id}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-20">
-        {securityAndAuditsData.items.map((item) => (
-          <Card {...item} key={item.heading} />
+      <ol className="roadmap-grid">
+        {securityAndAuditsData.items.map((item, index) => (
+          <Card {...item} index={index} key={item.heading} />
         ))}
-      </div>
+      </ol>
+      <a
+        href="/faq#will-there-be-an-audit-before-launch"
+        className="text-link self-start"
+      >
+        More about the launch process <span aria-hidden="true">↗</span>
+      </a>
     </Section>
   );
-};
-
-export default SecurityAndAudits;
+}

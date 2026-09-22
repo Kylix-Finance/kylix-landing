@@ -1,4 +1,3 @@
-/* eslint-disable @cspell/spellchecker */
 import { Instrument_Sans } from "next/font/google";
 import localFont from "next/font/local";
 
@@ -12,13 +11,12 @@ const migha = localFont({
   ],
   variable: "--font-migha",
   display: "swap",
-  preload: true,
+  preload: false,
 });
 
-// Not "--font-body": Tailwind v4 owns that name as the font-body theme key.
 const body = Instrument_Sans({
   subsets: ["latin"],
-  variable: "--font-instrument-sans",
+  variable: "--font-body",
   weight: ["400", "500", "600", "700"],
   display: "swap",
   preload: true,

@@ -1,22 +1,19 @@
 import Section from "~/components/Section";
 import { howItsWorksData } from "~/data";
 import Card from "./components/Card";
-import styles from "./styles.module.css";
-
-const HowItWorks = () => {
+export default function HowItWorks() {
   return (
     <Section
       heading={howItsWorksData.heading}
+      eyebrow="02 / How it works"
       description={howItsWorksData.description}
       id={howItsWorksData.id}
     >
-      <div className={styles.container}>
-        {howItsWorksData.items.map((item) => (
-          <Card data={item} className={styles[item.id]} key={item.id} />
+      <ol className="roles-list">
+        {howItsWorksData.items.map((item, index) => (
+          <Card data={item} index={index} key={item.id} />
         ))}
-      </div>
+      </ol>
     </Section>
   );
-};
-
-export default HowItWorks;
+}

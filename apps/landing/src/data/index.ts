@@ -9,34 +9,39 @@ import {
   SmartLending,
   Section,
 } from "~/types";
-import { BorrowImage, Check, Focus, Shield } from "~/assets/svgs";
 import {
-  decentralizedFuturesLogo,
-  harbourIndustrialCapitalLogo,
-  hercleLogo,
-} from "~/assets/images";
+  BorrowImage,
+  Check,
+  Focus,
+  Shield,
+  DecentralizedFutures,
+  HarbourIndustrialCapital,
+  HercleFinancial,
+  Pendulum,
+  Polimec,
+} from "~/assets/svgs";
 
 export const smartLendingData: Section<SmartLending> = {
   id: "smart-lending",
   header: "Protocol",
   heading: {
-    left: "One book",
-    right: "on Polkadot Hub",
+    left: "Your assets.",
+    right: "More possibilities.",
   },
   description:
-    "Supply, borrow and liquidation are written to one Hub state. There is no bridge receipt and no wrapped stand-in.",
+    "Kylix is building a lending market for native Hub assets, with productive collateral and all positions recorded on Polkadot Hub.",
   items: [
     {
-      to: "/#how-it-works",
-      heading: "Capital at work",
+      to: "/#markets-trends",
+      heading: "Collateral with a purpose",
       description:
-        "Collateral does not sit still. A self-repaying loan moves it into a yield-bearing position and uses that yield to pay the debt down.",
+        "The planned self-repaying loan puts eligible collateral into a yield-bearing position. Its yield goes toward your debt, helping offset borrowing costs.",
     },
     {
-      to: "/#markets-trends",
-      heading: "One state",
+      to: "/#how-it-works",
+      heading: "One place to lend and borrow",
       description:
-        "The protocol state lives in Polkadot Hub storage. A position updates there, so there is no second chain to wait on.",
+        "Supply, borrowing and liquidation share the same Hub state. Kylix works with native assets, without issuing a wrapped version of your deposit.",
     },
   ],
 };
@@ -44,51 +49,51 @@ export const smartLendingData: Section<SmartLending> = {
 // USDT stays off this list until an icon exists and the market is confirmed.
 export const supportedAssetsData: Section<Asset> = {
   header: "Assets",
-  heading: { left: "Launch", right: "markets" },
+  heading: { left: "Starting with", right: "DOT and USDC." },
   description:
-    "DOT and USDC first. A further asset is added only after an oracle and a listing decision. USDT is not listed yet.",
+    "The first planned markets use assets on Polkadot Hub. Further listings require an oracle and a listing decision.",
   id: "supported-assets-and-apy",
   items: [
     {
       src: "/assets/images/assets/dot.png",
       symbol: "DOT",
-      isLaunched: true,
+      isLaunched: false,
     },
     {
       src: "/assets/images/assets/usdc.png",
       symbol: "USDC",
-      isLaunched: true,
+      isLaunched: false,
     },
   ],
 };
 
 export const howItsWorksData: Section<HowItsWork> = {
-  header: "Why Kylix",
+  header: "How it works",
   heading: {
-    left: "Three",
-    right: "roles",
+    left: "One market.",
+    right: "Three ways to participate.",
   },
   description:
-    "One pool. Lenders, borrowers and liquidators use it differently.",
+    "Supply liquidity, borrow against your assets, or bid for collateral. Each role keeps the lending market moving.",
   id: "how-it-works",
   items: [
     {
       id: "deposit",
       heading: "Supply",
       description:
-        "Deposit DOT or USDC and earn the pool rate. You can withdraw only what the pool still has available.",
+        "Deposit DOT or USDC to earn the pool rate. Withdrawals depend on the liquidity available in the pool.",
     },
     {
       id: "convert",
       heading: "Borrow",
       description:
-        "Post collateral, draw the loan and repay on Hub. The position has to stay over-collateralized.",
+        "Provide collateral and borrow against it on Hub. Keep its value above the required threshold to avoid liquidation.",
     },
     {
       id: "borrow",
       heading: "Liquidate",
       description:
-        "Past the threshold, collateral is sold through a queue. Bids fill from the smallest discount. If the queue cannot cover the debt, the rest is swapped with an external market maker.",
+        "Bid for collateral from positions that fall below the required threshold. The queue fills the smallest discount first, with an external market maker covering any remainder.",
       image: BorrowImage,
     },
   ],
@@ -97,29 +102,29 @@ export const howItsWorksData: Section<HowItsWork> = {
 export const securityAndAuditsData: Section<Security> = {
   header: "Roadmap",
   heading: {
-    left: "Before",
-    right: "mainnet",
+    left: "Built in stages.",
+    right: "Reviewed before release.",
   },
   description:
-    "Each step finishes before the next one gets a public date. There is no launch date yet.",
+    "Kylix is in development. External review and testing come before mainnet; a launch date has not been announced.",
   id: "security-and-audits",
   items: [
     {
-      heading: "In build",
+      heading: "Protocol development",
       description:
-        "The pool, the rate curve and the liquidation queue are in development and internal testing. A position that would break the collateral rules is rejected.",
+        "The lending pool, interest curve and liquidation queue are being built and tested against the collateral rules.",
       icon: Shield,
     },
     {
-      heading: "Audit, then beta",
+      heading: "External audit & private beta",
       description:
-        "A private beta starts after an external review. The plan includes Polkadot Assurance Legion and the vCISO programme. Reports are published when they exist.",
+        "External review comes before the private beta. Audit reports will be published when available.",
       icon: Focus,
     },
     {
-      heading: "Testnet, then mainnet",
+      heading: "Public testnet & mainnet",
       description:
-        "Private beta, then a public testnet, then mainnet. The list at the bottom of this page is how you hear the date.",
+        "A public testnet follows the private beta. Mainnet comes after testing; join the list to hear when dates are confirmed.",
       icon: Check,
     },
   ],
@@ -128,10 +133,11 @@ export const securityAndAuditsData: Section<Security> = {
 export const marketTrendsData: Section<MarketTrend> = {
   header: "Mechanics",
   heading: {
-    left: "What is",
-    right: "different",
+    left: "Designed around",
+    right: "your collateral.",
   },
-  description: "Three parts of the protocol, not a longer feature list.",
+  description:
+    "Yield, interest rates and liquidation work together to shape what happens to a lending position.",
   id: "markets-trends",
   items: [
     {
@@ -143,19 +149,19 @@ export const marketTrendsData: Section<MarketTrend> = {
       imageNote: "Sample screen. These figures are not live.",
       items: [
         {
-          title: "Hub assets, not wrapped ones",
+          title: "Yield that works toward repayment",
           description:
-            "DOT and USDC stay Polkadot Hub assets. Kylix does not wrap them and does not ask you to bridge in.",
+            "Eligible collateral can generate yield that is applied to your loan. If that yield is below the borrowing interest, you remain responsible for the difference.",
         },
         {
-          title: "A rate that pays before the pool is full",
+          title: "Rates that respond to demand",
           description:
-            "Many curves stay near zero until utilization is high, so lenders leave. The polynomial curve pays earlier, then rises faster as the pool fills.",
+            "The polynomial interest curve is designed to reward supply at lower utilization, then rise faster as more of the pool is borrowed.",
         },
         {
-          title: "A queue, not a dump",
+          title: "An orderly liquidation queue",
           description:
-            "Liquidated collateral is offered to bidders. The smallest discount fills first. Whatever the queue cannot cover is swapped with an external market maker.",
+            "Bids fill from the smallest discount first. When the queue cannot cover the debt, the remainder is swapped with an external market maker.",
         },
       ],
     },
@@ -172,17 +178,27 @@ export const featuredPartnersData: Section<FeaturedPartners> = {
     {
       link: "https://wiki.polkadot.com/learn/decentralized-futures/",
       name: "Decentralized Futures",
-      logo: decentralizedFuturesLogo,
+      icon: DecentralizedFutures,
     },
     {
       link: "https://hercle.com/",
       name: "Hercle",
-      logo: hercleLogo,
+      icon: HercleFinancial,
     },
     {
       link: "https://www.harbourindustrial.com/",
       name: "Harbour Industrial Capital",
-      logo: harbourIndustrialCapitalLogo,
+      icon: HarbourIndustrialCapital,
+    },
+    {
+      link: "https://pendulumchain.org/",
+      name: "Pendulum",
+      icon: Pendulum,
+    },
+    {
+      link: "https://polimec.org/",
+      name: "Polimec",
+      icon: Polimec,
     },
   ],
 };

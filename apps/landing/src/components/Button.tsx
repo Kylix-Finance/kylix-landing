@@ -45,7 +45,7 @@ function buttonClassName(
 
   return twMerge(
     clsx(
-      "inline-flex items-center justify-center rounded-lg px-4 py-2 font-medium transition-colors duration-200",
+      "button inline-flex items-center justify-center font-medium transition-colors duration-200",
       "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500",
       "active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60",
       byVariant[variant]

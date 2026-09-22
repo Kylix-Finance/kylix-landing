@@ -8,7 +8,7 @@ import Image from "next/image";
 import { logoImg } from "~/assets/images";
 import Button from "~/components/Button";
 import { calculateBottom } from "~/utils";
-import { heroCopy, heroIntroClassName, heroTitleClassName } from "../heroCopy";
+import { heroCopy } from "../heroCopy";
 import Scene from "./Scene";
 const Hero3D = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -81,13 +81,7 @@ const Hero3D = () => {
               }}
               className="absolute left-1/2 "
             >
-              <Image
-                src={logoImg}
-                alt="Kylix"
-                height={320}
-                priority
-                sizes="(min-width: 700px) 320px, 160px"
-              />
+              <Image src={logoImg} alt="Kylix" height={320} />
             </motion.div>
           )}
           {/* FIRST Text START */}
@@ -98,11 +92,13 @@ const Hero3D = () => {
             }}
             className="absolute top-[20%] flex flex-col gap-2 justify-center items-center z-50"
           >
-            <h1 className={heroTitleClassName}>
+            <h1 className="flex w-full flex-col items-center justify-center gap-2.5 text-balance text-center font-heading text-4xl font-bold sm:flex-row md:text-5xl lg:text-6xl">
               <span className="text-primary-500">{heroCopy.titleLead}</span>
               <span className="text-white">{heroCopy.titleRest}</span>
             </h1>
-            <p className={heroIntroClassName}>{heroCopy.intro}</p>
+            <p className="max-w-xl text-pretty text-center text-sm font-normal leading-6 text-secondary-100 md:text-base">
+              {heroCopy.intro}
+            </p>
             <div className="z-50 flex gap-4">
               <Button href={heroCopy.primary.href} color="secondary">
                 {heroCopy.primary.label}
@@ -128,11 +124,13 @@ const Hero3D = () => {
             }}
             className="absolute top-[35%] flex flex-col gap-2 justify-center items-center z-40"
           >
-            <h2 className={heroTitleClassName}>
+            <h2 className="flex w-full flex-col items-center justify-center gap-2.5 text-balance text-center font-heading text-4xl font-bold sm:flex-row md:text-5xl lg:text-6xl">
               <span className="text-primary-500">{heroCopy.secondLead}</span>
               <span className="text-white">{heroCopy.secondRest}</span>
             </h2>
-            <p className={heroIntroClassName}>{heroCopy.secondIntro}</p>
+            <p className="max-w-xl text-pretty text-center text-sm font-normal leading-6 text-secondary-100 md:text-base">
+              {heroCopy.secondIntro}
+            </p>
             <div className="z-50 flex gap-4">
               <Button href={heroCopy.secondCta.href} color="secondary">
                 {heroCopy.secondCta.label}

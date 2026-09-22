@@ -1,6 +1,4 @@
-import { ReactElement } from "react";
 import HeroIntro from "./HeroIntro";
-
-export default function Hero(): ReactElement {
+export default function Hero() {
   return <HeroIntro />;
 }

@@ -29,7 +29,7 @@ export default function RootLayout({
       lang="en"
       className={`${fonts.migha.variable} ${fonts.body.variable}`}
     >
-      <body className="font-body relative flex h-full w-full flex-col bg-secondary-500 antialiased">
+      <body className="font-body relative isolate flex min-h-dvh w-full flex-col antialiased">
         <a
           href="#content"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-primary-500 focus:px-4 focus:py-2 focus:font-medium focus:text-secondary-500"
@@ -38,7 +38,7 @@ export default function RootLayout({
         </a>
         <BackGround />
         <Header />
-        <main id="content" className="flex w-full flex-col">
+        <main id="content" tabIndex={-1} className="flex w-full flex-col">
           {children}
         </main>
         <Footer />

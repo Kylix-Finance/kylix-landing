@@ -1,13 +1,18 @@
 export async function createContact(email: string): Promise<void> {
   let response: Response;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 12_000);
   try {
     response = await fetch("/api/contacts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
+      signal: controller.signal,
     });
   } catch {
     throw new Error("failed");
+  } finally {
+    clearTimeout(timeout);
   }
 
   if (response.ok) return;

@@ -1,10 +1,8 @@
-import { ReactElement } from "react";
 import Image from "next/image";
 import { logoImg } from "~/assets/images";
 import Button from "~/components/Button";
 import { heroCopy } from "./heroCopy";
-
-export default function HeroIntro(): ReactElement {
+export default function HeroIntro() {
   return (
     <section className="hero site-container" aria-labelledby="hero-heading">
       <div className="hero-copy">

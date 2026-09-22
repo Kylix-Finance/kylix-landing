@@ -1,21 +1,19 @@
 import Section from "~/components/Section";
 import Card from "./components/Card";
 import { smartLendingData } from "~/data";
-
-const SmartLending = () => {
+export default function SmartLending() {
   return (
     <Section
       heading={smartLendingData.heading}
+      eyebrow="01 / The protocol"
       description={smartLendingData.description}
       id={smartLendingData.id}
     >
-      <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 gap-8">
-        {smartLendingData.items.map((item) => (
-          <Card key={item.heading} {...item} />
+      <div className="protocol-grid">
+        {smartLendingData.items.map((item, index) => (
+          <Card key={item.heading} {...item} index={index} />
         ))}
       </div>
     </Section>
   );
-};
-
-export default SmartLending;
+}

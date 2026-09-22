@@ -1,15 +1,22 @@
+import { ReactElement } from "react";
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import rehypeSlug from "rehype-slug";
 
-export const CustomMDX = (props: MDXRemoteProps) => (
-  <div className=" text-light font-body prose max-w-prose mx-auto">
+type Props = MDXRemoteProps & {
+  variant?: "document" | "faq";
+};
+
+export const CustomMDX = ({
+  variant = "document",
+  ...props
+}: Props): ReactElement => (
+  <div className=" prose mx-auto max-w-prose font-body text-light">
     <MDXRemote
       {...props}
       components={{
         ...(props.components || {}),
         img: (props) => (
           <img
-            alt="MDXRemote"
             {...props}
             className="max-w-full h-auto rounded-lg shadow-lg sm:max-w-lg"
           />
@@ -22,22 +29,33 @@ export const CustomMDX = (props: MDXRemoteProps) => (
             {props.children}
           </h1>
         ),
-        h2: (props) => (
-          <h2
-            {...props}
-            className="text-2xl sm:text-3xl font-heading font-bold mb-3 text-primary-300 scroll-mt-[8rem]"
-          >
-            <a className="hover:text-primary-200 " href={`#${props.id}`}>
-              {props.children}
-            </a>
-          </h2>
-        ),
+        h2: (headingProps) =>
+          variant === "faq" ? (
+            <h2
+              id={headingProps.id}
+              className="mb-3 mt-10 scroll-mt-32 border-t border-white/10 pt-8 font-body text-xl font-semibold tracking-normal text-white first:mt-0 first:border-t-0 first:pt-0 sm:text-2xl"
+            >
+              {headingProps.children}
+            </h2>
+          ) : (
+            <h2
+              {...headingProps}
+              className="mb-3 scroll-mt-[8rem] font-heading text-2xl font-bold text-primary-300 sm:text-3xl"
+            >
+              <a
+                href={`#${headingProps.id}`}
+                className="hover:text-primary-200"
+              >
+                {headingProps.children}
+              </a>
+            </h2>
+          ),
         h3: (props) => (
           <h3
             {...props}
             className="text-xl sm:text-2xl font-heading font-bold mb-2 text-primary-200 scroll-mt-[8rem]"
           >
-            <a className="hover:text-primary-100" href={`#${props.id}`}>
+            <a href={`#${props.id}`} className="hover:text-primary-100">
               {props.children}
             </a>
           </h3>
@@ -47,7 +65,7 @@ export const CustomMDX = (props: MDXRemoteProps) => (
             {...props}
             className="text-lg sm:text-xl font-heading font-bold mb-2 text-primary-100 scroll-mt-[8rem]"
           >
-            <a className="hover:text-primary-50" href={`#${props.id}`}>
+            <a href={`#${props.id}`} className="hover:text-primary-50">
               {props.children}
             </a>
           </h4>
@@ -57,7 +75,7 @@ export const CustomMDX = (props: MDXRemoteProps) => (
             {...props}
             className="text-base sm:text-lg font-heading font-bold mb-1 text-primary-50  scroll-mt-[8rem]"
           >
-            <a className="hover:text-primary-100" href={`#${props.id}`}>
+            <a href={`#${props.id}`} className="hover:text-primary-100">
               {props.children}
             </a>
           </h5>
@@ -67,25 +85,40 @@ export const CustomMDX = (props: MDXRemoteProps) => (
             {...props}
             className="text-sm sm:text-base font-heading font-bold mb-1 text-primary-100  scroll-mt-[8rem]"
           >
-            <a className="hover:text-primary-200" href={`#${props.id}`}>
+            <a href={`#${props.id}`} className="hover:text-primary-200">
               {props.children}
             </a>
           </h6>
         ),
-        ul: (props) => (
+        ul: (listProps) => (
           <ul
-            {...props}
-            className="list-disc pl-6 space-y-2 text-primary-100 mb-4"
+            {...listProps}
+            className={
+              variant === "faq"
+                ? "mb-4 list-disc space-y-2 pl-6 text-base leading-7 text-secondary-100 marker:text-primary-500"
+                : "mb-4 list-disc space-y-2 pl-6 text-primary-100"
+            }
           />
         ),
-        ol: (props) => (
+        ol: (listProps) => (
           <ol
-            {...props}
-            className="list-decimal pl-6 space-y-2 text-primary-100 mb-4"
+            {...listProps}
+            className={
+              variant === "faq"
+                ? "mb-4 list-decimal space-y-2 pl-6 text-base leading-7 text-secondary-100 marker:text-primary-500"
+                : "mb-4 list-decimal space-y-2 pl-6 text-primary-100"
+            }
           />
         ),
-        p: (props) => (
-          <p {...props} className="text-primary-100 leading-relaxed mb-4" />
+        p: (paragraphProps) => (
+          <p
+            {...paragraphProps}
+            className={
+              variant === "faq"
+                ? "mb-4 text-base font-normal leading-7 text-secondary-100"
+                : "mb-4 leading-relaxed text-primary-100"
+            }
+          />
         ),
         strong: (props) => (
           <strong {...props} className="font-semibold text-white" />
@@ -107,15 +140,8 @@ export const CustomMDX = (props: MDXRemoteProps) => (
         },
       }}
       options={{
-        ...props.options,
         parseFrontmatter: true,
-        mdxOptions: {
-          ...props.options?.mdxOptions,
-          rehypePlugins: [
-            ...(props.options?.mdxOptions?.rehypePlugins ?? []),
-            rehypeSlug,
-          ],
-        },
+        mdxOptions: { rehypePlugins: [rehypeSlug] },
       }}
     />
   </div>

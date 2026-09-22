@@ -1,8 +1,7 @@
 "use client";
 
 import { useGLTF } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
+import { motion } from "framer-motion-3d";
 import * as THREE from "three";
 import { MotionValue, useSpring, useTransform } from "framer-motion";
 interface Props {
@@ -18,12 +17,8 @@ const rotationRange: inputRange = [
   [-Math.PI / 2.3, -Math.PI / 10, 0, 0],
 ];
 
-// Meshopt-compressed; three-stdlib bundles the decoder, so no CDN is needed.
-const JAR_MODEL = "/jar.glb";
-
 const Jar = ({ scrollYProgress }: Props) => {
-  const { nodes } = useGLTF(JAR_MODEL, false, true);
-  const groupRef = useRef<THREE.Group>(null);
+  const { nodes } = useGLTF("/jar.glb");
 
   const rotation = useTransform(scrollYProgress, ...rotationRange);
   const sRotation = useSpring(rotation, {
@@ -47,44 +42,41 @@ const Jar = ({ scrollYProgress }: Props) => {
     mass: 1,
   });
 
-  // Springs update outside React renders, so copy them onto the group every frame.
-  useFrame(() => {
-    const group = groupRef.current;
-    if (!group) return;
-    group.position.y = sPosition.get();
-    group.rotation.x = sRotation.get();
-    group.scale.setScalar(sScale.get());
-  });
-
   return (
-    <group dispose={null} ref={groupRef} rotation-y={-0.04}>
-      <group name="Mesh_0">
+    <motion.group
+      scale={sScale}
+      dispose={null}
+      rotation-x={sRotation}
+      rotation-y={-0.04}
+      position-y={sPosition}
+    >
+      <motion.group name="Mesh_0">
         {Object.entries(nodes).map(([name, node]) => {
           if (node instanceof THREE.Mesh) {
             const material = node.material as THREE.MeshStandardMaterial;
 
             return (
-              <mesh key={name} geometry={node.geometry} name={name}>
+              <motion.mesh key={name} name={name} geometry={node.geometry}>
                 <meshStandardMaterial
                   color={material.color}
                   emissive={material.emissive}
                   emissiveIntensity={material.emissiveIntensity}
                   emissiveMap={material.emissiveMap}
                   metalness={1.5}
-                  opacity={material.opacity}
                   roughness={0.1}
                   transparent={material.transparent}
+                  opacity={material.opacity}
                 />
-              </mesh>
+              </motion.mesh>
             );
           }
           return null;
         })}
-      </group>
-    </group>
+      </motion.group>
+    </motion.group>
   );
 };
 
 export default Jar;
 
-useGLTF.preload(JAR_MODEL, false, true);
+useGLTF.preload("/jar.glb");

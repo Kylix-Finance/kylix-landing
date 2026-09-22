@@ -1,43 +1,18 @@
 import { HowItsWork } from "~/types";
-import clsx from "clsx";
-interface Props {
+export default function Card({
+  data: { description, heading },
+  index,
+}: {
   data: HowItsWork;
-  className?: string;
-}
-const Card = ({
-  data: { description, heading, image: Icon },
-  className,
-}: Props) => {
+  index: number;
+}) {
   return (
-    <div
-      className={clsx(
-        "min-w-0 w-full relative rounded-3xl bg-gradient-to-br from-white/20 via-transparent border border-primary-500/30 grid-item",
-        className
-      )}
-    >
-      <div
-        className="absolute inset-0 rounded-3xl"
-        style={{
-          background: `radial-gradient(circle at top left, #56DDB490 0%, rgba(17, 23, 61, 0) 20%)`,
-        }}
-      />
-      <div className="flex flex-col gap-20 bg-secondary-500 p-7 rounded-3xl">
-        <div className="flex flex-col gap-2.5">
-          <h3 className="relative z-10 font-heading text-4xl font-bold leading-tight text-white">
-            {heading}
-          </h3>
-          <p className="font-light text-sm leading-5 text-white relative z-10">
-            {description}
-          </p>
-        </div>
-        {Icon && (
-          <div className="flex w-full h-full justify-center items-center">
-            <Icon />
-          </div>
-        )}
-      </div>
-    </div>
+    <li className="role-row">
+      <span className="card-index" aria-hidden="true">
+        0{index + 1}
+      </span>
+      <h3>{heading}</h3>
+      <p>{description}</p>
+    </li>
   );
-};
-
-export default Card;
+}

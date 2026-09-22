@@ -1,47 +1,66 @@
 "use client";
-
-import { ReactElement, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { XIcon, Menu } from "~/assets/svgs";
-import { kylixWordmarkImg } from "~/assets/images";
 import Link from "next/link";
-import { navItems } from "~/data";
+import { usePathname } from "next/navigation";
+import { navItems } from "~/data/navigation";
 import { useLockBodyScroll } from "~/hooks/useLockBodyScroll";
+import Button from "./Button";
 
-const navLinkClass =
-  "rounded-xs text-sm font-medium leading-5 text-white hover:text-primary-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-500";
-
-export default function Header(): ReactElement {
+export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef<HTMLButtonElement>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const wasOpen = useRef(false);
-
-  const toggleMenu = (): void => setIsOpen((prev) => !prev);
+  const [activeSection, setActiveSection] = useState("");
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const pathname = usePathname();
   useLockBodyScroll({ isLocked: isOpen });
 
   useEffect(() => {
-    if (isOpen) closeRef.current?.focus();
-    else if (wasOpen.current) menuRef.current?.focus();
-    wasOpen.current = isOpen;
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (isOpen && !dialog.open) dialog.showModal();
+    if (!isOpen && dialog.open) dialog.close();
   }, [isOpen]);
 
   useEffect(() => {
-    if (!isOpen) return;
-    const onKeyDown = (event: KeyboardEvent): void => {
-      if (event.key === "Escape") setIsOpen(false);
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const closeOnDesktop = () => {
+      if (desktop.matches) setIsOpen(false);
     };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [isOpen]);
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => desktop.removeEventListener("change", closeOnDesktop);
+  }, []);
 
-  const renderedNavItems = navItems.map(({ label, link }) => (
+  useEffect(() => {
+    setIsOpen(false);
+    setActiveSection("");
+    if (pathname !== "/") return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        }
+      },
+      { rootMargin: "-100px 0px -55% 0px" }
+    );
+    for (const item of navItems) {
+      const id = item.link.split("#")[1];
+      const element = id ? document.getElementById(id) : null;
+      if (element) observer.observe(element);
+    }
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  const links = navItems.map(({ label, link }) => (
     <Link
       key={link}
       href={link}
-      className={navLinkClass}
+      className="nav-link"
       onClick={() => setIsOpen(false)}
+      aria-current={
+        pathname === "/" && link === `/#${activeSection}`
+          ? "location"
+          : undefined
+      }
     >
       {label}
     </Link>
@@ -49,66 +68,114 @@ export default function Header(): ReactElement {
 
   return (
     <>
-      <header className="fixed top-0 z-20 w-full py-4 text-white">
-        <div className="mx-6 flex items-center justify-between gap-6 rounded-2xl border border-primary-900 bg-gradient-to-r from-[#11121439] to-[#0C0D0F45] px-8 py-4 backdrop-blur-3xl">
-          <Link href="/" aria-label="Kylix Finance, home" className="shrink-0">
+      <header className="site-header">
+        <div className="site-container header-inner">
+          <Link
+            href="/"
+            aria-label="Kylix Finance, home"
+            className="brand-link"
+          >
             <Image
-              src={kylixWordmarkImg}
-              alt=""
-              width={75}
-              height={30}
+              src="/assets/brand/wordmark.svg"
+              alt="Kylix"
+              width={88}
+              height={35}
               priority
             />
           </Link>
-          <nav
-            aria-label="Primary"
-            className="hidden items-center gap-8 lg:flex"
-          >
-            {renderedNavItems}
+          <nav aria-label="Primary" className="desktop-nav">
+            {links}
+            <Button href="/#waiting-list">
+              Get updates <span aria-hidden="true">↗</span>
+            </Button>
           </nav>
           <button
-            ref={menuRef}
             type="button"
-            className="rounded-md text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 lg:hidden"
-            onClick={toggleMenu}
+            className="menu-button"
+            onClick={() => setIsOpen(true)}
             aria-label="Open menu"
             aria-expanded={isOpen}
             aria-controls="mobile-nav"
           >
-            <Menu className="h-6 w-6" />
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M3 6h14M3 10h14M3 14h14"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+            </svg>
           </button>
         </div>
       </header>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.nav
-            id="mobile-nav"
-            aria-label="Mobile"
-            initial={{ opacity: 0, y: "-100%" }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: "-100%" }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="fixed left-0 top-0 z-30 flex h-dvh w-screen flex-col bg-secondary-900/70 text-white lg:hidden"
+      <dialog
+        ref={dialogRef}
+        id="mobile-nav"
+        aria-label="Site navigation"
+        className="mobile-dialog"
+        onCancel={() => setIsOpen(false)}
+        onClose={() => setIsOpen(false)}
+        onKeyDown={(event) => {
+          if (event.key !== "Tab") return;
+          const controls = event.currentTarget.querySelectorAll<HTMLElement>(
+            "a[href], button:not([disabled])"
+          );
+          const first = controls[0];
+          const last = controls[controls.length - 1];
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last?.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first?.focus();
+          }
+        }}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) setIsOpen(false);
+        }}
+      >
+        <div className="mobile-dialog-top">
+          <span className="eyebrow">Explore Kylix</span>
+          <button
+            type="button"
+            className="menu-button"
+            onClick={() => setIsOpen(false)}
+            aria-label="Close menu"
           >
-            <div className="flex h-full w-full flex-col gap-6 bg-secondary-500 p-6">
-              <div className="flex items-center justify-between">
-                <Image src={kylixWordmarkImg} alt="" width={75} height={30} />
-                <button
-                  ref={closeRef}
-                  type="button"
-                  onClick={toggleMenu}
-                  aria-label="Close menu"
-                  className="rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
-                >
-                  <XIcon className="h-6 w-6" />
-                </button>
-              </div>
-              <div className="flex flex-col gap-4">{renderedNavItems}</div>
-            </div>
-          </motion.nav>
-        )}
-      </AnimatePresence>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="m5 5 10 10M15 5 5 15"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+            </svg>
+          </button>
+        </div>
+        <nav aria-label="Mobile" className="mobile-nav">
+          {links}
+          <Link
+            href="/faq"
+            className="nav-link"
+            onClick={() => setIsOpen(false)}
+          >
+            FAQ
+          </Link>
+          <Button href="/#waiting-list" onClick={() => setIsOpen(false)}>
+            Get launch updates <span aria-hidden="true">↗</span>
+          </Button>
+        </nav>
+      </dialog>
     </>
   );
 }

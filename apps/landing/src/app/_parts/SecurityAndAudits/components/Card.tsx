@@ -1,28 +1,16 @@
 import { Security } from "~/types";
-
-const Card = ({ description, heading, icon: Icon }: Security) => {
+export default function Card({
+  description,
+  heading,
+  index,
+}: Security & { index: number }) {
   return (
-    <div className="flex flex-col gap-5 justify-center md:justify-start">
-      <div className="flex gap-5 items-center md:flex-col md:items-start">
-        <div className="relative rounded-xl bg-gradient-to-br from-white/20 via-transparent p-0.5 w-24 h-24">
-          <div
-            className="absolute inset-0 rounded-xl"
-            style={{
-              background: `radial-gradient(circle at bottom right, #56DDB490 0%, rgba(17, 23, 61, 0) 70%)`,
-            }}
-          />
-          <div className="bg-secondary-500 p-7 rounded-xl">
-            <Icon />
-          </div>
-        </div>
-
-        <h3 className="font-heading text-3xl leading-tight text-white">
-          {heading}
-        </h3>
-      </div>
-      <p className="font-light text-white text-sm leading-5">{description}</p>
-    </div>
+    <li className="roadmap-step">
+      <span className="eyebrow">
+        {index === 0 ? "01 / In progress" : `0${index + 1} / Planned`}
+      </span>
+      <h3>{heading}</h3>
+      <p>{description}</p>
+    </li>
   );
-};
-
-export default Card;
+}

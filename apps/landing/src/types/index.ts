@@ -1,5 +1,4 @@
 import { ComponentType, SVGProps } from "react";
-import { StaticImageData } from "next/image";
 export interface Section<T> {
   id: string;
   heading: {
@@ -69,7 +68,7 @@ export type SocialMedia = {
 export type FeaturedPartners = {
   link: string;
   name: string;
-  logo: StaticImageData;
+  icon: Icon;
 };
 export type FooterItem = {
   title: string;

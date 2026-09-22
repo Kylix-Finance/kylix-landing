@@ -92,7 +92,7 @@ const Hero3D = () => {
             }}
             className="absolute top-[20%] flex flex-col gap-2 justify-center items-center z-50"
           >
-            <h1 className="flex w-full flex-col items-center justify-center gap-2.5 text-balance text-center font-heading text-4xl font-bold sm:flex-row md:text-5xl lg:text-6xl">
+            <h1 className="flex w-full flex-col items-center justify-center gap-2.5 text-balance text-center text-4xl font-bold sm:flex-row md:text-5xl lg:text-6xl">
               <span className="text-primary-500">{heroCopy.titleLead}</span>
               <span className="text-white">{heroCopy.titleRest}</span>
             </h1>
@@ -124,7 +124,7 @@ const Hero3D = () => {
             }}
             className="absolute top-[35%] flex flex-col gap-2 justify-center items-center z-40"
           >
-            <h2 className="flex w-full flex-col items-center justify-center gap-2.5 text-balance text-center font-heading text-4xl font-bold sm:flex-row md:text-5xl lg:text-6xl">
+            <h2 className="flex w-full flex-col items-center justify-center gap-2.5 text-balance text-center text-4xl font-bold sm:flex-row md:text-5xl lg:text-6xl">
               <span className="text-primary-500">{heroCopy.secondLead}</span>
               <span className="text-white">{heroCopy.secondRest}</span>
             </h2>

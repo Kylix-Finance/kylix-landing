@@ -1,76 +1,61 @@
-import Image from "next/image";
-import Button from "~/components/Button";
 import { marketTrendsData } from "~/data";
-import { motion, Variants } from "framer-motion";
-const variants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -20 },
-};
-
-interface Props {
-  id: number;
-}
-
-const Card = ({ id }: Props) => {
-  const currentSlide = marketTrendsData.items.find((item) => item.id === id);
-  if (!currentSlide) return null;
-
+export default function Card({ id }: { id: number }) {
+  const item = marketTrendsData.items.find((slide) => slide.id === id);
+  if (!item) return null;
   return (
-    <motion.div
-      className="flex flex-col md:flex-row gap-16 items-center justify-between"
-      key={currentSlide.id}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-      variants={variants}
-      transition={{ duration: 0.3 }}
-    >
-      <div className="flex flex-col gap-8 order-2 md:order-1">
-        <div className="flex flex-col gap-8">
-          {currentSlide.items.map((item, index) => (
-            <div className="flex flex-col gap-1" key={index}>
-              <h3 className="font-bold text-2xl leading-8 text-white">
-                {item.title}
-              </h3>
-              <p className="font-normal text-base leading-6 text-secondary-300">
-                {item.description}
-              </p>
+    <div className="mechanics-grid">
+      <ol className="mechanic-list">
+        {item.items.map((mechanic, index) => (
+          <li key={mechanic.title} className="mechanic-item">
+            <span className="card-index" aria-hidden="true">
+              0{index + 1}
+            </span>
+            <div>
+              <h3>{mechanic.title}</h3>
+              <p>{mechanic.description}</p>
             </div>
-          ))}
+          </li>
+        ))}
+      </ol>
+      <figure className="mechanism-figure" aria-labelledby="mechanism-caption">
+        <p className="eyebrow">The self-repaying loan</p>
+        <div
+          className="mechanism-flow"
+          aria-label="Eligible collateral generates yield. That yield is applied to the outstanding debt."
+        >
+          <div className="flow-hub" aria-hidden="true">
+            <span className="flow-hub-core" />
+          </div>
+          <svg
+            className="flow-lines"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path className="flow-line" d="M0,50 L100,16.66" />
+            <path className="flow-line flow-line-accent" d="M0,50 L100,50" />
+            <path className="flow-line" d="M0,50 L100,83.33" />
+          </svg>
+          <ul className="flow-spokes">
+            <li className="flow-node">
+              <span className="flow-pill">Your collateral</span>
+              <p>Eligible yield-bearing assets</p>
+            </li>
+            <li className="flow-node flow-node-accent">
+              <span className="flow-pill">Yield goes to your loan</span>
+              <p>Applied automatically to your debt</p>
+            </li>
+            <li className="flow-node">
+              <span className="flow-pill">A smaller balance to repay</span>
+              <p>When yield outpaces interest</p>
+            </li>
+          </ul>
         </div>
-        <div className="flex items-center gap-2.5">
-          {currentSlide?.actions?.primary && (
-            <Button
-              onClick={currentSlide.actions.primary.action}
-              variant="primary"
-              color="secondary"
-            >
-              {currentSlide.actions.primary.label}
-            </Button>
-          )}
-          {currentSlide.actions?.secondary && (
-            <Button
-              onClick={currentSlide.actions.secondary.action}
-              variant="outline"
-              color="white"
-            >
-              {currentSlide.actions.secondary.label}
-            </Button>
-          )}
-        </div>
-      </div>
-      <div className="relative w-full order-1">
-        <Image
-          className="ml-auto"
-          width={644}
-          height={384}
-          src={currentSlide.image}
-          alt={currentSlide.label}
-        />
-      </div>
-    </motion.div>
+        <figcaption id="mechanism-caption">
+          Planned mechanism. Yield and borrowing rates vary; you still owe any
+          remaining balance.
+        </figcaption>
+      </figure>
+    </div>
   );
-};
-
-export default Card;
+}

@@ -80,8 +80,9 @@
   },
   "pnpm": {
     "overrides": {
-      "motion-dom": "12.6.3",
-      "motion-utils": "12.6.3"
+      "framer-motion@12.6.3>motion-dom": "12.6.3",
+      "framer-motion@12.6.3>motion-utils": "12.6.3",
+      "framer-motion-3d@11.2.0>framer-motion": "11.2.0"
     }
   }
 }

@@ -42,13 +42,17 @@ const Jar = ({ scrollYProgress }: Props) => {
     mass: 1,
   });
 
+  // framer-motion-3d bundles its own framer-motion@11 instead of taking it as
+  // a peer, so its MotionValue type is nominally distinct from the one these
+  // springs come from (framer-motion@12) even though both work identically
+  // at runtime - cast across that boundary here.
   return (
     <motion.group
-      scale={sScale}
+      scale={sScale as unknown as number}
       dispose={null}
-      rotation-x={sRotation}
+      rotation-x={sRotation as unknown as number}
       rotation-y={-0.04}
-      position-y={sPosition}
+      position-y={sPosition as unknown as number}
     >
       <motion.group name="Mesh_0">
         {Object.entries(nodes).map(([name, node]) => {

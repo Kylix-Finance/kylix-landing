@@ -1,6 +1,7 @@
 import { mergeMetadata } from "@repo/shared";
 import { Metadata } from "next";
 import Hero from "./_parts/Hero";
+import ClosingArt from "./_parts/ClosingArt";
 import FeaturedPartners from "./_parts/FeaturedPartners";
 import HowItWorks from "./_parts/HowItWorks";
 import MarketTrends from "./_parts/MarketTrends";
@@ -28,6 +29,7 @@ export default function Page() {
       <SupportedAssetsAndAPY />
       <SecurityAndAudits />
       <WaitingList />
+      <ClosingArt />
     </>
   );
 }

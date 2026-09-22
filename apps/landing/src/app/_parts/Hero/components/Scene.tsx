@@ -15,11 +15,12 @@ extend(THREE);
 
 interface Props {
   scrollYProgress: MotionValue<number>;
+  height?: string;
 }
 
-const Scene = ({ scrollYProgress }: Props) => {
+const Scene = ({ scrollYProgress, height = "100vh" }: Props) => {
   return (
-    <MotionCanvas shadows dpr={[1, 2]} style={{ height: "100vh" }}>
+    <MotionCanvas shadows dpr={[1, 2]} style={{ height }}>
       <Camera />
 
       <OrbitControls

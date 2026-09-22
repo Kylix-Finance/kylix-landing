@@ -384,6 +384,28 @@
   gap: 16px;
   color: #bacbc2;
 }
+.closing-art {
+  position: relative;
+  width: 100%;
+  padding-block: 24px 8px;
+  isolation: isolate;
+  overflow: clip;
+}
+.closing-art::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(70%, 480px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #56ddb414, transparent 70%);
+  z-index: -1;
+}
+.closing-art-canvas {
+  height: clamp(280px, 32vw, 420px);
+}
 .partners {
   padding-block: 40px 64px;
 }

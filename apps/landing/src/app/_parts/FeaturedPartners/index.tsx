@@ -4,8 +4,6 @@ const partnerImages: Record<string, string> = {
   "Decentralized Futures": "decentralized-futures",
   Hercle: "hercle",
   "Harbour Industrial Capital": "harbour",
-  Pendulum: "pendulum",
-  Polimec: "polimec",
 };
 export default function FeaturedPartners() {
   return (

@@ -17,8 +17,6 @@ import {
   DecentralizedFutures,
   HarbourIndustrialCapital,
   HercleFinancial,
-  Pendulum,
-  Polimec,
 } from "~/assets/svgs";
 
 export const smartLendingData: Section<SmartLending> = {
@@ -189,16 +187,6 @@ export const featuredPartnersData: Section<FeaturedPartners> = {
       link: "https://www.harbourindustrial.com/",
       name: "Harbour Industrial Capital",
       icon: HarbourIndustrialCapital,
-    },
-    {
-      link: "https://pendulumchain.org/",
-      name: "Pendulum",
-      icon: Pendulum,
-    },
-    {
-      link: "https://polimec.org/",
-      name: "Polimec",
-      icon: Polimec,
     },
   ],
 };

@@ -16,12 +16,13 @@ extend(THREE);
 interface Props {
   scrollYProgress: MotionValue<number>;
   height?: string;
+  frustumSize?: number;
 }
 
-const Scene = ({ scrollYProgress, height = "100vh" }: Props) => {
+const Scene = ({ scrollYProgress, height = "100vh", frustumSize }: Props) => {
   return (
     <MotionCanvas shadows dpr={[1, 2]} style={{ height }}>
-      <Camera />
+      <Camera frustumSize={frustumSize} />
 
       <OrbitControls
         enablePan={false}

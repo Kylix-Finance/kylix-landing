@@ -1,6 +1,27 @@
+"use client";
+import { useEffect, useRef, useState } from "react";
 import { marketTrendsData } from "~/data";
 export default function Card({ id }: { id: number }) {
   const item = marketTrendsData.items.find((slide) => slide.id === id);
+  const diagramRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const node = diagramRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.35 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   if (!item) return null;
   return (
     <div className="mechanics-grid">
@@ -20,7 +41,8 @@ export default function Card({ id }: { id: number }) {
       <figure className="mechanism-figure" aria-labelledby="mechanism-caption">
         <p className="eyebrow">The self-repaying loan</p>
         <div
-          className="mechanism-diagram"
+          ref={diagramRef}
+          className={`mechanism-diagram${isVisible ? " is-visible" : ""}`}
           aria-label="Your collateral generates yield. That yield is applied to the outstanding debt, leaving a smaller balance to repay."
         >
           <svg
@@ -29,14 +51,77 @@ export default function Card({ id }: { id: number }) {
             aria-hidden="true"
           >
             <path
+              id="mechanism-branch-a"
               className="mechanism-branch"
               d="M108,160 C150,160 150,60 184,60"
             />
-            <path className="mechanism-branch" d="M108,160 L184,160" />
             <path
+              id="mechanism-branch-b"
+              className="mechanism-branch"
+              d="M108,160 L184,160"
+            />
+            <path
+              id="mechanism-branch-c"
               className="mechanism-branch"
               d="M108,160 C150,160 150,260 184,260"
             />
+            <circle className="mechanism-particle" r="3">
+              <animateMotion
+                dur="2.4s"
+                begin="0s"
+                repeatCount="indefinite"
+                keyPoints="0;1"
+                keyTimes="0;1"
+              >
+                <mpath href="#mechanism-branch-a" />
+              </animateMotion>
+              <animate
+                attributeName="opacity"
+                values="0;1;1;0"
+                keyTimes="0;0.15;0.8;1"
+                dur="2.4s"
+                begin="0s"
+                repeatCount="indefinite"
+              />
+            </circle>
+            <circle className="mechanism-particle" r="3">
+              <animateMotion
+                dur="2.4s"
+                begin="0.8s"
+                repeatCount="indefinite"
+                keyPoints="0;1"
+                keyTimes="0;1"
+              >
+                <mpath href="#mechanism-branch-b" />
+              </animateMotion>
+              <animate
+                attributeName="opacity"
+                values="0;1;1;0"
+                keyTimes="0;0.15;0.8;1"
+                dur="2.4s"
+                begin="0.8s"
+                repeatCount="indefinite"
+              />
+            </circle>
+            <circle className="mechanism-particle" r="3">
+              <animateMotion
+                dur="2.4s"
+                begin="1.6s"
+                repeatCount="indefinite"
+                keyPoints="0;1"
+                keyTimes="0;1"
+              >
+                <mpath href="#mechanism-branch-c" />
+              </animateMotion>
+              <animate
+                attributeName="opacity"
+                values="0;1;1;0"
+                keyTimes="0;0.15;0.8;1"
+                dur="2.4s"
+                begin="1.6s"
+                repeatCount="indefinite"
+              />
+            </circle>
           </svg>
           <div className="mechanism-token" aria-hidden="true">
             <span className="mechanism-token-ring" />

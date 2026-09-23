@@ -575,6 +575,10 @@
     stroke-dashoffset: -24;
   }
 }
+.mechanism-particle {
+  fill: #baf5df;
+  filter: drop-shadow(0 0 4px #56ddb4cc);
+}
 .mechanism-token {
   position: absolute;
   left: 12.3%;
@@ -624,6 +628,37 @@
   border-radius: 999px;
   background: #111d17;
 }
+.mechanism-pill::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid #78e4c3;
+  border-radius: inherit;
+  box-shadow: 0 0 22px -2px #56ddb488;
+  opacity: 0;
+  pointer-events: none;
+  animation: mechanism-pill-spotlight 2.4s ease-in-out infinite;
+}
+.mechanism-pill-a::after {
+  animation-delay: 0s;
+}
+.mechanism-pill-b::after {
+  animation-delay: 0.8s;
+}
+.mechanism-pill-c::after {
+  animation-delay: 1.6s;
+}
+@keyframes mechanism-pill-spotlight {
+  0%,
+  78%,
+  100% {
+    opacity: 0;
+  }
+  10%,
+  25% {
+    opacity: 1;
+  }
+}
 .mechanism-pill strong {
   font-size: 15px;
   font-weight: 500;
@@ -660,6 +695,52 @@
 }
 .mechanism-note-c {
   top: calc(81.25% + 28px);
+}
+.mechanism-diagram-lines,
+.mechanism-token,
+.mechanism-pill,
+.mechanism-note {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.mechanism-diagram.is-visible .mechanism-diagram-lines {
+  opacity: 1;
+}
+.mechanism-diagram.is-visible .mechanism-token {
+  opacity: 1;
+  transition-delay: 0.05s;
+}
+.mechanism-diagram.is-visible .mechanism-pill-a,
+.mechanism-diagram.is-visible .mechanism-note-a {
+  opacity: 1;
+  transition-delay: 0.2s;
+}
+.mechanism-diagram.is-visible .mechanism-pill-b,
+.mechanism-diagram.is-visible .mechanism-note-b {
+  opacity: 1;
+  transition-delay: 0.35s;
+}
+.mechanism-diagram.is-visible .mechanism-pill-c,
+.mechanism-diagram.is-visible .mechanism-note-c {
+  opacity: 1;
+  transition-delay: 0.5s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mechanism-diagram-lines,
+  .mechanism-token,
+  .mechanism-pill,
+  .mechanism-note {
+    transition: none;
+    opacity: 1;
+  }
+  .mechanism-branch,
+  .mechanism-token-core,
+  .mechanism-pill::after {
+    animation: none;
+  }
+  .mechanism-particle {
+    display: none;
+  }
 }
 .mechanism-figure figcaption {
   color: #aabbb0;

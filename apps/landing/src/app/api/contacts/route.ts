@@ -120,8 +120,11 @@ export async function POST(request: Request): Promise<NextResponse> {
       return jsonError("already_registered", 409);
     }
 
+    // Upstream status and message only: never the address that was submitted.
+    console.error("contacts:brevo", response.status, errorMessage(payload));
     return jsonError("failed", 502);
-  } catch {
+  } catch (error) {
+    console.error("contacts:fetch", error);
     return jsonError("failed", 502);
   }
 }

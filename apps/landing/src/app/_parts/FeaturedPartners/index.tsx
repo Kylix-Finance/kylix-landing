@@ -1,10 +1,5 @@
 import Image from "next/image";
 import { featuredPartnersData } from "~/data";
-const partnerImages: Record<string, string> = {
-  "Decentralized Futures": "decentralized-futures",
-  Hercle: "hercle",
-  "Harbour Industrial Capital": "harbour",
-};
 export default function FeaturedPartners() {
   return (
     <section
@@ -16,7 +11,7 @@ export default function FeaturedPartners() {
         Supported by
       </h2>
       <ul className="partners-list">
-        {featuredPartnersData.items.map(({ link, name }) => (
+        {featuredPartnersData.items.map(({ link, name, logo }) => (
           <li key={name}>
             <a
               href={link}
@@ -24,12 +19,7 @@ export default function FeaturedPartners() {
               rel="noopener noreferrer"
               className="partner-link"
             >
-              <Image
-                src={`/assets/partners/${partnerImages[name]}.svg`}
-                alt={name}
-                width={150}
-                height={96}
-              />
+              <Image src={logo} alt={name} width={150} height={96} />
             </a>
           </li>
         ))}

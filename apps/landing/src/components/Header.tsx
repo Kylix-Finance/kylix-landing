@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { kylixWordmarkImg } from "~/assets/images";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navItems } from "~/data/navigation";
@@ -76,7 +77,7 @@ export default function Header() {
             className="brand-link"
           >
             <Image
-              src="/assets/brand/wordmark.svg"
+              src={kylixWordmarkImg}
               alt="Kylix"
               width={88}
               height={35}

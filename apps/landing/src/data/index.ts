@@ -9,15 +9,12 @@ import {
   SmartLending,
   Section,
 } from "~/types";
+import { BorrowImage, Check, Focus, Shield } from "~/assets/svgs";
 import {
-  BorrowImage,
-  Check,
-  Focus,
-  Shield,
-  DecentralizedFutures,
-  HarbourIndustrialCapital,
-  HercleFinancial,
-} from "~/assets/svgs";
+  decentralizedFuturesLogo,
+  harbourIndustrialCapitalLogo,
+  hercleLogo,
+} from "~/assets/images";
 
 export const smartLendingData: Section<SmartLending> = {
   id: "smart-lending",
@@ -104,7 +101,7 @@ export const securityAndAuditsData: Section<Security> = {
     right: "Reviewed before release.",
   },
   description:
-    "Kylix is in development. External review and testing come before mainnet; a launch date has not been announced.",
+    "Kylix is in development. External review and testing come before mainnet, which is planned for November 2026.",
   id: "security-and-audits",
   items: [
     {
@@ -122,7 +119,7 @@ export const securityAndAuditsData: Section<Security> = {
     {
       heading: "Public testnet & mainnet",
       description:
-        "A public testnet follows the private beta. Mainnet comes after testing; join the list to hear when dates are confirmed.",
+        "A public testnet follows the private beta. Mainnet is planned for November 2026; join the list to hear the exact date.",
       icon: Check,
     },
   ],
@@ -176,17 +173,17 @@ export const featuredPartnersData: Section<FeaturedPartners> = {
     {
       link: "https://wiki.polkadot.com/learn/decentralized-futures/",
       name: "Decentralized Futures",
-      icon: DecentralizedFutures,
+      logo: decentralizedFuturesLogo,
     },
     {
       link: "https://hercle.com/",
       name: "Hercle",
-      icon: HercleFinancial,
+      logo: hercleLogo,
     },
     {
       link: "https://www.harbourindustrial.com/",
       name: "Harbour Industrial Capital",
-      icon: HarbourIndustrialCapital,
+      logo: harbourIndustrialCapitalLogo,
     },
   ],
 };

@@ -9,7 +9,7 @@ const PLACEHOLDER_HOSTS = new Set([
   "www.google.come",
 ]);
 
-function resolveMetadataBase(): URL {
+export function resolveMetadataBase(): URL {
   const raw = process.env.NEXT_PUBLIC_FRONTEND_URL;
   if (raw) {
     try {

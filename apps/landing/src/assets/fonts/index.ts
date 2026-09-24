@@ -16,7 +16,8 @@ const migha = localFont({
 
 const body = Instrument_Sans({
   subsets: ["latin"],
-  variable: "--font-body",
+  // Not "--font-body": Tailwind v4 owns that name as the font-body theme key.
+  variable: "--font-instrument-sans",
   weight: ["400", "500", "600", "700"],
   display: "swap",
   preload: true,

@@ -26,11 +26,16 @@ export function generateStaticParams(): { slug: string }[] {
   return getAllContentSlugs().map((slug) => ({ slug: slug.toString() }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<{
   title?: string;
   description?: string;
-} {
-  const post = getContentData(params.slug);
+}> {
+  const { slug } = await params;
+  const post = getContentData(slug);
   if (!post) return {};
   return {
     title: typeof post.title === "string" ? post.title : undefined,
@@ -39,12 +44,13 @@ export function generateMetadata({ params }: { params: { slug: string } }): {
   };
 }
 
-export default function ContentPage({
+export default async function ContentPage({
   params,
 }: {
-  params: { slug: string };
-}): ReactElement {
-  const post = getContentData(params.slug);
+  params: Promise<{ slug: string }>;
+}): Promise<ReactElement> {
+  const { slug } = await params;
+  const post = getContentData(slug);
 
   if (!post) {
     notFound();
@@ -53,7 +59,7 @@ export default function ContentPage({
   const title = typeof post.title === "string" ? post.title : "Note";
   const description =
     typeof post.description === "string" ? post.description : "";
-  const isFaq = params.slug === "faq";
+  const isFaq = slug === "faq";
   const questions = isFaq ? faqQuestions(post.content) : [];
 
   return (

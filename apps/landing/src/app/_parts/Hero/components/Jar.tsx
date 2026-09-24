@@ -1,7 +1,8 @@
 "use client";
 
 import { useGLTF } from "@react-three/drei";
-import { motion } from "framer-motion-3d";
+import { useFrame } from "@react-three/fiber";
+import { useRef } from "react";
 import * as THREE from "three";
 import { MotionValue, useSpring, useTransform } from "framer-motion";
 interface Props {
@@ -17,8 +18,12 @@ const rotationRange: inputRange = [
   [-Math.PI / 2.3, -Math.PI / 10, 0, 0],
 ];
 
+// Meshopt-compressed; three-stdlib bundles the decoder, so no CDN is needed.
+const JAR_MODEL = "/jar.glb";
+
 const Jar = ({ scrollYProgress }: Props) => {
-  const { nodes } = useGLTF("/jar.glb");
+  const { nodes } = useGLTF(JAR_MODEL, false, true);
+  const groupRef = useRef<THREE.Group>(null);
 
   const rotation = useTransform(scrollYProgress, ...rotationRange);
   const sRotation = useSpring(rotation, {
@@ -42,25 +47,24 @@ const Jar = ({ scrollYProgress }: Props) => {
     mass: 1,
   });
 
-  // framer-motion-3d bundles its own framer-motion@11 instead of taking it as
-  // a peer, so its MotionValue type is nominally distinct from the one these
-  // springs come from (framer-motion@12) even though both work identically
-  // at runtime - cast across that boundary here.
+  // Springs update outside React renders, so copy them onto the group every frame.
+  useFrame(() => {
+    const group = groupRef.current;
+    if (!group) return;
+    group.position.y = sPosition.get();
+    group.rotation.x = sRotation.get();
+    group.scale.setScalar(sScale.get());
+  });
+
   return (
-    <motion.group
-      scale={sScale as unknown as number}
-      dispose={null}
-      rotation-x={sRotation as unknown as number}
-      rotation-y={-0.04}
-      position-y={sPosition as unknown as number}
-    >
-      <motion.group name="Mesh_0">
+    <group dispose={null} ref={groupRef} rotation-y={-0.04}>
+      <group name="Mesh_0">
         {Object.entries(nodes).map(([name, node]) => {
           if (node instanceof THREE.Mesh) {
             const material = node.material as THREE.MeshStandardMaterial;
 
             return (
-              <motion.mesh key={name} name={name} geometry={node.geometry}>
+              <mesh key={name} name={name} geometry={node.geometry}>
                 <meshStandardMaterial
                   color={material.color}
                   emissive={material.emissive}
@@ -71,16 +75,16 @@ const Jar = ({ scrollYProgress }: Props) => {
                   transparent={material.transparent}
                   opacity={material.opacity}
                 />
-              </motion.mesh>
+              </mesh>
             );
           }
           return null;
         })}
-      </motion.group>
-    </motion.group>
+      </group>
+    </group>
   );
 };
 
 export default Jar;
 
-useGLTF.preload("/jar.glb");
+useGLTF.preload(JAR_MODEL, false, true);

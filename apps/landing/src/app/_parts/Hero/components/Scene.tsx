@@ -4,14 +4,10 @@ import { Environment, OrbitControls } from "@react-three/drei";
 import Jar from "./Jar";
 import { Suspense } from "react";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
-import { MotionCanvas } from "framer-motion-3d";
+import { Canvas } from "@react-three/fiber";
 import { MotionValue } from "framer-motion";
 
-import * as THREE from "three";
-import { extend } from "@react-three/fiber";
 import Camera from "./Camera";
-
-extend(THREE);
 
 interface Props {
   scrollYProgress: MotionValue<number>;
@@ -21,7 +17,7 @@ interface Props {
 
 const Scene = ({ scrollYProgress, height = "100vh", frustumSize }: Props) => {
   return (
-    <MotionCanvas shadows dpr={[1, 2]} style={{ height }}>
+    <Canvas shadows dpr={[1, 2]} style={{ height }}>
       <Camera frustumSize={frustumSize} />
 
       <OrbitControls
@@ -37,9 +33,9 @@ const Scene = ({ scrollYProgress, height = "100vh", frustumSize }: Props) => {
         </EffectComposer>
         <Jar scrollYProgress={scrollYProgress} />
 
-        <Environment preset="warehouse" />
+        <Environment files="/hdri/empty_warehouse_01_1k.hdr" />
       </Suspense>
-    </MotionCanvas>
+    </Canvas>
   );
 };
 
